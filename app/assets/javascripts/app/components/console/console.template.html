@@ -1,0 +1,7 @@
+<div class="panel panel-default">
+    <div class="panel-heading">Console</div>
+    <div class="panel-body">
+        <progressbar [max]="60" [value]="console.time" [type]="getType()">{{console.time | number:'.0'}} min</progressbar>
+        <button type="button" class="btn btn-sm btn-primary" (click)="random()">Randomize</button>
+    </div>
+</div>

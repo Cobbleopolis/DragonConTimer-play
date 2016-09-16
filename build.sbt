@@ -34,7 +34,9 @@ val angularJars = Seq(
     "org.webjars.npm" % "rxjs" % "5.0.0-beta.12",
     "org.webjars.npm" % "systemjs" % "0.19.38",
     "org.webjars.npm" % "zone.js" % "0.6.21",
-    "org.webjars.npm" % "angular2-in-memory-web-api" % "0.0.19"
+    "org.webjars.npm" % "angular2-in-memory-web-api" % "0.0.19",
+    "org.webjars.npm" % "ng2-bootstrap" % "1.1.2", //TODO update to 1.1.4 when maven updates
+    "org.webjars.npm" % "moment" % "2.15.0"
 )
 
 val otherDependencies = Seq(

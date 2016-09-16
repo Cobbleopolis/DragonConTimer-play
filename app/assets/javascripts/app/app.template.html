@@ -1,1 +1,4 @@
 <h1>{{message}}</h1>
+<div *ngFor="let console of consoles">
+    <console [console]="console"></console>
+</div>
