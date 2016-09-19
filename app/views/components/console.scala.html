@@ -1,0 +1,12 @@
+@(console: Console)
+
+<div id="console@console.id" class="panel panel-default">
+    <div class="panel-heading">Console @console.id</div>
+    <div class="panel-body">
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="@console.time" aria-valuemin="0" aria-valuemax="60" style="width: @{console.time / 60 * 100}%">
+                @console.time.asInstanceOf[Int] min
+            </div>
+        </div>
+    </div>
+</div>
