@@ -17,7 +17,8 @@ val webJars = Seq (
     "org.webjars" %% "webjars-play" % "2.5.0",
     "org.webjars" % "bootstrap-sass" % "3.3.1-1",
     "org.webjars" % "jquery" % "2.2.2",
-    "org.webjars.bower" % "font-awesome-sass" % "4.6.2"
+    "org.webjars.bower" % "font-awesome-sass" % "4.6.2",
+    "org.webjars.npm" % "systemjs" % "0.19.38"
 )
 
 val otherDependencies = Seq(

@@ -1,7 +1,11 @@
-import { Console } from 'models/console';
+import { Console } from './models/console';
 let console = new Console('a', 60);
 
 $(function() {
+    if(window.location.hash) {
+        var hash = window.location.hash;
+        $(hash).modal('toggle');
+    }
     let start = new Date();
     let timer = setInterval(function() {
         decProgBar(start);
