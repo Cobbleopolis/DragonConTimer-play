@@ -1093,7 +1093,7 @@ interface JQueryStatic {
     noop(): any;
 
     /**
-     * Return a number representing the current time.
+     * Return a number representing the current timeRemaining.
      */
     now(): number;
 
@@ -1880,14 +1880,14 @@ interface JQuery {
      * 
      * @param eventType A string containing one or more DOM event types, such as "click" or "submit," or custom event names.
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     bind(eventType: string, eventData: any, handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
      * Attach a handler to an event for the elements.
      * 
      * @param eventType A string containing one or more DOM event types, such as "click" or "submit," or custom event names.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     bind(eventType: string, handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
@@ -1919,14 +1919,14 @@ interface JQuery {
     /**
      * Bind an event handler to the "blur" JavaScript event
      *
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     blur(handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "blur" JavaScript event
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     blur(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
 
@@ -1937,14 +1937,14 @@ interface JQuery {
     /**
      * Bind an event handler to the "change" JavaScript event
      *
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     change(handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "change" JavaScript event
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     change(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
 
@@ -1962,7 +1962,7 @@ interface JQuery {
      * Bind an event handler to the "click" JavaScript event
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     click(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
 
@@ -1991,14 +1991,14 @@ interface JQuery {
     /**
      * Bind an event handler to the "dblclick" JavaScript event
      *
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     dblclick(handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "dblclick" JavaScript event
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     dblclick(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
 
@@ -2012,14 +2012,14 @@ interface JQuery {
     /**
      * Bind an event handler to the "focus" JavaScript event
      *
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     focus(handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "focus" JavaScript event
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     focus(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
 
@@ -2030,14 +2030,14 @@ interface JQuery {
     /**
      * Bind an event handler to the "focusin" JavaScript event
      *
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     focusin(handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "focusin" JavaScript event
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     focusin(eventData: Object, handler: (eventObject: JQueryEventObject) => any): JQuery;
 
@@ -2048,14 +2048,14 @@ interface JQuery {
     /**
      * Bind an event handler to the "focusout" JavaScript event
      *
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     focusout(handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "focusout" JavaScript event
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     focusout(eventData: Object, handler: (eventObject: JQueryEventObject) => any): JQuery;
 
@@ -2080,14 +2080,14 @@ interface JQuery {
     /**
      * Bind an event handler to the "keydown" JavaScript event
      *
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     keydown(handler: (eventObject: JQueryKeyEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "keydown" JavaScript event
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     keydown(eventData?: any, handler?: (eventObject: JQueryKeyEventObject) => any): JQuery;
 
@@ -2098,14 +2098,14 @@ interface JQuery {
     /**
      * Bind an event handler to the "keypress" JavaScript event
      *
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     keypress(handler: (eventObject: JQueryKeyEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "keypress" JavaScript event
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     keypress(eventData?: any, handler?: (eventObject: JQueryKeyEventObject) => any): JQuery;
 
@@ -2116,14 +2116,14 @@ interface JQuery {
     /**
      * Bind an event handler to the "keyup" JavaScript event
      *
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     keyup(handler: (eventObject: JQueryKeyEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "keyup" JavaScript event
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     keyup(eventData?: any, handler?: (eventObject: JQueryKeyEventObject) => any): JQuery;
 
@@ -2353,7 +2353,7 @@ interface JQuery {
      * Attach a handler to an event for the elements. The handler is executed at most once per element per event type.
      *
      * @param events A string containing one or more JavaScript event types, such as "click" or "submit," or custom event names.
-     * @param handler A function to execute at the time the event is triggered.
+     * @param handler A function to execute at the timeRemaining the event is triggered.
      */
     one(events: string, handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
@@ -2361,7 +2361,7 @@ interface JQuery {
      *
      * @param events A string containing one or more JavaScript event types, such as "click" or "submit," or custom event names.
      * @param data An object containing data that will be passed to the event handler.
-     * @param handler A function to execute at the time the event is triggered.
+     * @param handler A function to execute at the timeRemaining the event is triggered.
      */
     one(events: string, data: Object, handler: (eventObject: JQueryEventObject) => any): JQuery;
 
@@ -2415,14 +2415,14 @@ interface JQuery {
     /**
      * Bind an event handler to the "resize" JavaScript event.
      *
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     resize(handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "resize" JavaScript event.
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     resize(eventData: Object, handler: (eventObject: JQueryEventObject) => any): JQuery;
 
@@ -2433,14 +2433,14 @@ interface JQuery {
     /**
      * Bind an event handler to the "scroll" JavaScript event.
      *
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     scroll(handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "scroll" JavaScript event.
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     scroll(eventData: Object, handler: (eventObject: JQueryEventObject) => any): JQuery;
 
@@ -2451,14 +2451,14 @@ interface JQuery {
     /**
      * Bind an event handler to the "select" JavaScript event.
      *
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     select(handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "select" JavaScript event.
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     select(eventData: Object, handler: (eventObject: JQueryEventObject) => any): JQuery;
 
@@ -2469,14 +2469,14 @@ interface JQuery {
     /**
      * Bind an event handler to the "submit" JavaScript event
      *
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     submit(handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "submit" JavaScript event
      *
      * @param eventData An object containing data that will be passed to the event handler.
-     * @param handler A function to execute each time the event is triggered.
+     * @param handler A function to execute each timeRemaining the event is triggered.
      */
     submit(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
 
@@ -2541,7 +2541,7 @@ interface JQuery {
      * 
      * @param selector A selector which will be used to filter the event results.
      * @param eventType A string containing a JavaScript event type, such as "click" or "keydown"
-     * @param handler A function to execute at the time the event is triggered.
+     * @param handler A function to execute at the timeRemaining the event is triggered.
      */
     undelegate(selector: string, eventType: string, handler?: (eventObject: JQueryEventObject) => any): JQuery;
     /**
