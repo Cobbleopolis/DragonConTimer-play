@@ -4,7 +4,7 @@ val appVersion: String = "1.0"
 
 val appScalaVersion: String = "2.11.7"
 
-val ngVersion: String = "2.0.0-rc.7"
+val reactVersion: String = "15.3.2"
 
 val baseDependencies = Seq(
     jdbc,
@@ -17,7 +17,13 @@ val webJars = Seq (
     "org.webjars" %% "webjars-play" % "2.5.0",
     "org.webjars" % "bootstrap-sass" % "3.3.1-1",
     "org.webjars" % "jquery" % "2.2.2",
-    "org.webjars.bower" % "font-awesome-sass" % "4.6.2"
+    "org.webjars.bower" % "font-awesome-sass" % "4.6.2",
+    "org.webjars.npm" % "requirejs" % "2.3.2"
+)
+
+val reactJars = Seq(
+    "org.webjars.npm" % "react" % reactVersion,
+    "org.webjars.npm" % "react-dom" % reactVersion
 )
 
 val otherDependencies = Seq(
@@ -29,7 +35,7 @@ lazy val `dragoncontimer` = (project in file(".")).enablePlugins(PlayScala, Debi
     name := appName,
     version := appVersion,
     scalaVersion := appScalaVersion,
-    libraryDependencies ++= baseDependencies ++ webJars ++ otherDependencies,
+    libraryDependencies ++= baseDependencies ++ webJars ++ reactJars ++ otherDependencies,
     unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" ),
     resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases",
     resolveFromWebjarsNodeModulesDir := true,
@@ -37,6 +43,8 @@ lazy val `dragoncontimer` = (project in file(".")).enablePlugins(PlayScala, Debi
     maintainer in Linux := "Logan Thompson <cobbleopolis@gmail.com>",
     packageSummary in Linux := "DragonCon Timer server",
     packageDescription := "A play server to run a DragonCon Timer instance",
-    (testOptions in Test) += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/report")
-//    bashScriptExtraDefines += """addJava "-Dconfig.file=${app_home}/../conf/production.conf""""
+    (testOptions in Test) += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/report"),
+    JsEngineKeys.engineType := JsEngineKeys.EngineType.Node,
+    pipelineStages := Seq(rjs)
+    //    bashScriptExtraDefines += """addJava "-Dconfig.file=${app_home}/../conf/production.conf""""
 )
