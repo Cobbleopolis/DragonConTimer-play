@@ -1,11 +1,18 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import {Station} from "./components/stations";
 
-import { Hello } from "./components/Hello";
+interface MainProps { compiler: string; framework: string; }
+
+class Main extends React.Component<{}, {}> {
+    render() {
+        return <Station id="A" />;
+    }
+}
 
 $(function() {
     ReactDOM.render(
-        <Hello compiler="TypeScript" framework="React" />,
-        document.getElementById("example")
+        <Main/>,
+        document.getElementById("main")
     );
 });

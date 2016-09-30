@@ -1,17 +1,8 @@
-@import components._
 @import org.webjars.play.RequireJS
-@(message: String)(implicit webJarAssets: WebJarAssets, requireJS: RequireJS)
+@()(implicit webJarAssets: WebJarAssets, requireJS: RequireJS)
 
 @main(buildinfo.BuildInfo.name, "javascripts/index") {
 
 } {
-    <div><p>@message</p></div>
-    <div id="example"></div>
-
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createConsole">Create Console</button>
-
-    @console(Console("A", 60))
-
-    @modals.createConsole()
-
+    <div id="main"></div>
 }

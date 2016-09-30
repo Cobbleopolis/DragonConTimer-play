@@ -8,7 +8,7 @@ import play.api.mvc._
 class Application @Inject()(implicit webJarAssets: WebJarAssets, requireJS: RequireJS) extends Controller {
 
     def index = Action {
-        Ok(views.html.index(buildinfo.BuildInfo.name + " is ready!"))
+        Ok(views.html.index())
     }
 
 }
