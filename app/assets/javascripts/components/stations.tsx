@@ -1,12 +1,11 @@
 import * as React from "react";
+import { ProgressBar } from "react-bootstrap";
 
 export interface StationProps {id: string}
 
 export interface StationState {id: string; time: number;}
 
 export class Station extends React.Component<StationProps, StationState> {
-
-    serverRequest: JQueryXHR;
 
     static getInitialState(): StationState {
         return {id: 'Loading...', time: 0}
@@ -15,7 +14,7 @@ export class Station extends React.Component<StationProps, StationState> {
     constructor(props: StationProps) {
         super(props);
         this.state = Station.getInitialState();
-        this.serverRequest = $.ajax({
+        $.ajax({
             type: 'GET',
             url: `/data/stations/${this.props.id}`,
             dataType: 'json',
@@ -27,17 +26,18 @@ export class Station extends React.Component<StationProps, StationState> {
                 this.setState(data);
             }
         });
-        setTimeout(() => {
-            this.setState(this.state);
-        }, 1000)
+        setInterval(() => {
+            this.setState({time: this.state.time - 15000} as StationState);
+        }, 250)
     }
 
     render() {
-        console.log("Render");
         return (
             <div className="panel panel-default">
                 <div className="panel-heading">{this.state.id}</div>
-                <div className="panel-body">{this.state.time}</div>
+                <div className="panel-body">
+                    <ProgressBar now={this.state.time} max={3600000} label={`${Math.floor(this.state.time / 60000)}min`}/>
+                </div>
             </div>
         );
     }

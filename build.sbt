@@ -23,7 +23,8 @@ val webJars = Seq (
 
 val reactJars = Seq(
     "org.webjars.npm" % "react" % reactVersion,
-    "org.webjars.npm" % "react-dom" % reactVersion
+    "org.webjars.npm" % "react-dom" % reactVersion,
+    "org.webjars.npm" % "react-bootstrap" % "0.30.3"
 )
 
 val otherDependencies = Seq(

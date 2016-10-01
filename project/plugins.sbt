@@ -15,3 +15,5 @@ addSbtPlugin("name.de-vries" % "sbt-typescript" % "0.3.0-beta.3")
 addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.6.1")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-rjs" % "1.0.7")
+
+addSbtPlugin("com.github.stonexx.sbt" % "sbt-babeljs" % "1.0.5")

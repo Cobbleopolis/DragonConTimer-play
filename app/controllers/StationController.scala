@@ -17,6 +17,10 @@ class StationController extends Controller {
         Ok(Json.toJson(store.values))
     }
 
+    def getKeys = Action {
+        Ok(Json.toJson(store.keys))
+    }
+
     def get(id: String) = Action {
         if (store.contains(id))
             Ok(Json.toJson(store.get(id)))

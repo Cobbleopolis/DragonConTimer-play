@@ -7,6 +7,7 @@ GET        /                         controllers.Application.index
 
 # Station
 GET        /data/stations            controllers.StationController.getAll
+GET        /data/stationKeys         controllers.StationController.getKeys
 GET        /data/stations/:id        controllers.StationController.get(id: String)
 
 # Map static resources from the /public folder to the /assets URL path
