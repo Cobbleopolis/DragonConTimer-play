@@ -10,6 +10,9 @@ GET        /data/stations            controllers.StationController.getAll
 GET        /data/stationKeys         controllers.StationController.getKeys
 GET        /data/stations/:id        controllers.StationController.get(id: String)
 
+# WebSockets
+GET        /stations                 controllers.StationController.socket
+
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file             controllers.Assets.at(path="/public", file)
 

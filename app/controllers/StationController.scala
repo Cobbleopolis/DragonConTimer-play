@@ -1,10 +1,16 @@
 package controllers
 
+import javax.inject.Inject
+
+import akka.actor.ActorSystem
+import akka.stream.Materializer
 import models.Station
 import play.api.libs.json.Json
+import play.api.libs.streams.ActorFlow
 import play.api.mvc._
+import sockets.StationSocket
 
-class StationController extends Controller {
+class StationController @Inject() (implicit system: ActorSystem, materializer: Materializer) extends Controller {
 
     val store: Map[String, Station] = Map[String, Station](
         "A" -> Station("A", 3600000f),
@@ -26,6 +32,10 @@ class StationController extends Controller {
             Ok(Json.toJson(store.get(id)))
         else
             NotFound
+    }
+
+    def socket = WebSocket.accept[String, String] { request =>
+        ActorFlow.actorRef(out => StationSocket.props(out))
     }
 
 }
