@@ -5,7 +5,7 @@
 # Home page
 GET        /                         controllers.Application.index
 
-# Station
+# StationComponent
 GET        /data/stations            controllers.StationController.getAll
 GET        /data/stationKeys         controllers.StationController.getKeys
 GET        /data/stations/:id        controllers.StationController.get(id: String)

@@ -4,11 +4,13 @@ import javax.inject.Inject
 
 import akka.actor.ActorSystem
 import akka.stream.Materializer
-import models.Station
+import messages.StationMessage
+import models._
 import play.api.libs.json.Json
 import play.api.libs.streams.ActorFlow
 import play.api.mvc._
 import sockets.StationSocket
+import sockets.StationSocket.messageFlowTransformer
 
 class StationController @Inject() (implicit system: ActorSystem, materializer: Materializer) extends Controller {
 
@@ -34,7 +36,7 @@ class StationController @Inject() (implicit system: ActorSystem, materializer: M
             NotFound
     }
 
-    def socket = WebSocket.accept[String, String] { request =>
+    def socket = WebSocket.accept[StationMessage, StationMessage]{ request =>
         ActorFlow.actorRef(out => StationSocket.props(out))
     }
 
