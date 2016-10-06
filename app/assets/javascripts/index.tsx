@@ -1,3 +1,4 @@
+import "jquery";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {StationComponent} from "./components/stations";
@@ -24,7 +25,7 @@ class Main extends React.Component<MainProps, MainState> {
             console.log("RECEIVE: " + msg);
             console.log(msg.messageType);
             if (msg.messageType === 1) {
-                this.setState(update(this.state, {stations: {$push: [msg]}}))
+                this.setState(update(this.state, {stations: {$push: [msg]}}) as MainState)
             } else if (msg.messageType === 2) {
                 let updatedStations = this.state.stations;
                 for (let i = 0; i <= updatedStations.length; i++)
@@ -32,7 +33,7 @@ class Main extends React.Component<MainProps, MainState> {
                         updatedStations[i] = msg.station;
                         break;
                     }
-                this.setState(update(this.state, {stations: {$set: updatedStations}}))
+                this.setState(update(this.state, {stations: {$set: updatedStations}}) as MainState)
             }
         };
         this.state = {stations: []};

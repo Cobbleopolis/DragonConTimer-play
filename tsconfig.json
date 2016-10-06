@@ -4,7 +4,7 @@
   */
   "compilerOptions": {
     "target": "es5",
-    "module": "amd",
+    "module": "commonjs",
     /* the following two settings are required for angular2 annotations to work*/
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
