@@ -1,43 +1,47 @@
 import * as React from "react";
-import { ProgressBar } from "react-bootstrap";
-import {Station} from "../models/station";
+import { ProgressBar, Button } from "react-bootstrap";
+import {Station, IStation} from "../models/station";
 
-export interface StationProps {station: Station}
+export interface StationProps {station: Station, sendUpdate: (station: Station) => any}
 
 export interface StationState {id: string; time: number;}
 
-export class StationComponent extends React.Component<StationProps, {}> {
+const dangerPoint: number = 600000;
+const warningPoint: number = 1200000;
+const successPoint: number = 1800000;
+const infoPoint: number = 2700000;
 
-    static getInitialState(): StationState {
-        return {id: 'Loading...', time: 0}
-    }
+export class StationComponent extends React.Component<StationProps, {}> {
 
     constructor(props: StationProps) {
         super(props);
-        // this.state = StationComponent.getInitialState();
-        // $.ajax({
-        //     type: 'GET',
-        //     url: `/data/stations/${this.props.id}`,
-        //     dataType: 'json',
-        //     context: this,
-        //     error(error: JQueryXHR, status: string, errorThrown: string) {
-        //         console.error(status + ' | ' + errorThrown, error);
-        //     },
-        //     success(data: StationState) {
-        //         this.setState(data);
-        //     }
-        // });
-        // setInterval(() => {
-        //     this.setState({time: this.state.time - 15000} as StationState);
-        // }, 250)
+        this.update = this.update.bind(this);
+    }
+
+    update() {
+        this.props.sendUpdate(this.props.station)
     }
 
     render() {
+        let progressBarStyle: string = null;
+        if (this.props.station.time <= dangerPoint)
+            progressBarStyle = "danger";
+        else if (this.props.station.time <= warningPoint)
+            progressBarStyle = "warning";
+        else if (this.props.station.time <= successPoint)
+            progressBarStyle = "success";
+        else if (this.props.station.time <= infoPoint)
+            progressBarStyle = "info";
+        let min: number = Math.floor(this.props.station.time / 60000);
+        let minDisplay: string = (min != 0) ? `${min}min` : "";
+        let sec: number = Math.floor(this.props.station.time % 60000 / 1000);
+        let secDisplay: string = (sec != 0) ? `${sec}sec` : "";
         return (
             <div className="panel panel-default">
                 <div className="panel-heading">{this.props.station.id}</div>
                 <div className="panel-body">
-                    <ProgressBar now={this.props.station.time} max={3600000} label={`${Math.floor(this.props.station.time / 60000)}min`}/>
+                    <ProgressBar bsStyle={progressBarStyle} now={this.props.station.time} max={3600000} label={(minDisplay + " " + secDisplay).trim()}/>
+                    <Button onClick={this.update}>Send</Button>
                 </div>
             </div>
         );

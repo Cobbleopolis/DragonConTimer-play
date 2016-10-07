@@ -9,12 +9,12 @@ var webpack = require('webpack'),
 
 var config = {
     target: 'web',
-    entry: [
-        path.join(srcJsPath, 'index.tsx'),
-        'bootstrap-loader',
-        'font-awesome-sass!./font-awesome-sass.config.js'
+    context: __dirname,
+    entry: {
+        app: path.join(srcJsPath, 'index.tsx'),
+        common: ['bootstrap-loader', 'font-awesome-sass!./font-awesome-sass.config.js', 'react', 'react-dom', 'react-bootstrap']
         //, common: ['react-dom', 'react']
-    ],
+    },
     resolve: {
         alias: {},
         root: srcJsPath,
@@ -24,10 +24,20 @@ var config = {
     output: {
         path: path.resolve(__dirname, jsPath),
         publicPath: '',
-        filename: 'app.js',
+        filename: '[name].js',
+        chunkFilename: '[chunkhash].bundle.js',
         pathInfo: true
     },
-
+    cache: true,
+    watch: true,
+    watchOptions: {
+        poll: 300
+    },
+    debug: true,
+    profile: true,
+    devtool: 'eval',
+    quiet: true,
+    noInfo: true,
     module: {
         noParse: [],
         loaders: [
@@ -70,7 +80,12 @@ var config = {
             jQuery: "jquery"
         }),
         new webpack.NoErrorsPlugin()
-    ]
+    ],
+    devServer: {
+        hot: true,
+        inline: true,
+        quiet: true
+    }
 };
 
 module.exports = config;

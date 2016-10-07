@@ -1,3 +1,6 @@
+import com.typesafe.sbt.packager.universal.UniversalPlugin.autoImport._
+import sbt.Keys._
+
 val appName: String = "DragonCon Timer"
 val appVersion: String = "1.0"
 val appScalaVersion: String = "2.11.7"
@@ -20,6 +23,9 @@ val otherDependencies = Seq(
     "com.adrianhurt" %% "play-bootstrap" % "1.0-P25-B3" exclude("org.webjars", "jquery"),
     "org.mindrot" % "jbcrypt" % "0.3m"
 )
+
+
+
 lazy val `dragoncontimer` = (project in file(".")).enablePlugins(PlayScala, DebianPlugin, BuildInfoPlugin).settings(
     name := appName,
     version := appVersion,
@@ -36,7 +42,7 @@ lazy val `dragoncontimer` = (project in file(".")).enablePlugins(PlayScala, Debi
     excludeFilter in(Assets, JshintKeys.jshint) := "*.js",
     watchSources ~= { (ws: Seq[File]) =>
         ws filterNot { path =>
-            path.getName.endsWith(".js") || path.getName == ("build")
+            path.getName.endsWith(".tsx") || path.getName == "app"
         }
     },
     pipelineStages := Seq(digest, gzip)

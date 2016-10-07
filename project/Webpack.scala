@@ -11,29 +11,37 @@ object Webpack {
             override def beforeStarted() = {
                 if (!(base / "node_modules").exists)
                     process = Option(
-                        Process(getCommand("npm", "install"), base).run()
+                        Process(getCommand("npm", "install", "&", "webpack"), base).run()
+                    )
+                else
+                    process = Option(
+                        Process(getCommand("webpack"), base).run()
                     )
             }
 
             override def afterStarted(addr: InetSocketAddress) = {
                 process = Option(
-                    Process(getCommand("webpack", "--watch"), base).run()
+                    Process(getCommand("webpack-dev-server", "--hot", "--inline"), base).run()
                 )
-            }
-
-            def getCommand(command: String*): String = {
-                scala.sys.props("os.name").toLowerCase match {
-                    case osName if osName contains "windows" => (Seq("cmd", "/C") ++ command).mkString(" ")
-                    case _ => command.mkString(" ")
-                }
             }
 
             override def afterStopped() = {
                 process.foreach(_.destroy())
+                if (isWindows)
+                    Process("cmd /c taskkill /F /IM node.exe").run()
                 process = None
             }
         }
 
         WebpackHook
+    }
+
+    def isWindows: Boolean = scala.sys.props("os.name").toLowerCase.contains("windows")
+
+    def getCommand(command: String*): String = {
+        if (isWindows)
+            (Seq("cmd", "/C") ++ command).mkString(" ")
+        else
+            command.mkString(" ")
     }
 }
