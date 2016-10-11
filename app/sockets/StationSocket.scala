@@ -24,9 +24,8 @@ class StationSocket(out: ActorRef) extends Actor {
 
     StationSocket.connectedClients += out
 
-    StationSocket.store.foreach {
-        case (key: String, value: Station) => out ! StationMessage(1, key, value)
-    }
+    for ((key, value) <- StationSocket.store)
+        out ! StationMessage(1, key, value)
 
     def receive = {
         case msg: StationMessage =>

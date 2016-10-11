@@ -2,23 +2,33 @@ package controllers
 
 import javax.inject.Inject
 
-import org.webjars.play.RequireJS
+import com.typesafe.config.Config
+import controllers.Application.JsBase
 import play.api.Mode
+import play.api.libs.ws.WSClient
 import play.api.mvc._
 
-class Application @Inject()(implicit webJarAssets: WebJarAssets, environment: play.api.Environment, config: play.api.Configuration) extends Controller {
+import scala.concurrent.ExecutionContext
 
-    val webpackServer: String = config.underlying.getString("dc-timer.debug.webpack-server")
+class Application @Inject()(implicit webJarAssets: WebJarAssets, environment: play.api.Environment, cfg: play.api.Configuration, ws: WSClient, context: ExecutionContext) extends Controller {
 
-    def index = Action {
+    val config: Config = cfg.underlying
+
+    val webpackServerIsSecure: Boolean = config.getBoolean("dc-timer.debug.webpack-server.isSecure")
+    val webpackServerPort: Int = config.getInt("dc-timer.debug.webpack-server.port")
+    val webpackServerContentPath: String = config.getString("dc-timer.debug.webpack-server.contentPath")
+
+    val webpackServerFormat: String = s"http${if (webpackServerIsSecure) "s" else ""}://%s:$webpackServerPort/$webpackServerContentPath"
+
+    def index = Action { implicit request =>
+        implicit val jsPath: JsBase = if (environment.mode == Mode.Dev) webpackServerFormat.format(request.domain) else routes.Assets.at("/javascripts").url
         Ok(views.html.index())
     }
 
-    def jsRouting(file: String) = Action {
-        if (environment.mode == Mode.Dev)
-            Redirect(webpackServer + file)
-        else
-            Redirect(routes.Assets.at(file))
-    }
+}
+
+object Application {
+
+    type JsBase = String
 
 }

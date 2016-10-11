@@ -1,6 +1,6 @@
-@()(implicit webJarAssets: WebJarAssets)
+@()(implicit webJarAssets: WebJarAssets, jsBase: controllers.Application.JsBase)
 
-@main(buildinfo.BuildInfo.name, "javascripts/index") {
+@main(buildinfo.BuildInfo.name) {
 
 } {
     <div id="main"></div>

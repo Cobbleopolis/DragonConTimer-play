@@ -1,4 +1,3 @@
-import com.typesafe.sbt.packager.universal.UniversalPlugin.autoImport._
 import sbt.Keys._
 
 val appName: String = "DragonCon Timer"
