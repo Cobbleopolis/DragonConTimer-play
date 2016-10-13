@@ -25,17 +25,17 @@ class StationSocket(out: ActorRef) extends Actor {
     StationSocket.connectedClients += out
 
     for ((key, value) <- StationSocket.store)
-        out ! StationMessage(1, key, value)
+        out ! StationMessage(MessageType.ADD, key, value)
 
     def receive = {
         case msg: StationMessage =>
             if (msg.id == "goodbye")
                 self ! PoisonPill
             msg.messageType match {
-                case 2 =>
+                case MessageType.UPDATE =>
                     StationSocket.store += (msg.id -> msg.station)
             }
-            StationSocket.broadcast(StationMessage(2, msg.id, StationSocket.store(msg.id)))
+            StationSocket.broadcast(StationMessage(MessageType.UPDATE, msg.id, StationSocket.store(msg.id)))
     }
 
     override def postStop(): Unit = {
