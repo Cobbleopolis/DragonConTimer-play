@@ -84,7 +84,8 @@ var config = {
     devServer: {
         hot: true,
         inline: true,
-        quiet: true
+        quiet: true,
+        host: "0.0.0.0"
     }
 };
 
