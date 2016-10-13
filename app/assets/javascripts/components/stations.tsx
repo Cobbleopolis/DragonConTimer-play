@@ -2,9 +2,15 @@ import * as React from "react";
 import { ProgressBar, Button } from "react-bootstrap";
 import {Station, IStation} from "../models/station";
 
-export interface StationProps {station: Station, sendUpdate: (station: Station) => any}
+export interface StationProps {
+    station: Station,
+    sendUpdate: (station: Station) => any
+}
 
-export interface StationState {id: string; time: number;}
+export interface StationState {
+    id: string;
+    time: number;
+}
 
 const dangerPoint: number = 600000;
 const warningPoint: number = 1200000;

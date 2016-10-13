@@ -1,6 +1,9 @@
 import * as React from "react";
 
-export interface MainProps { compiler: string; framework: string; }
+export interface MainProps {
+    compiler: string;
+    framework: string;
+}
 
 export class Main extends React.Component<MainProps, {}> {
     render() {

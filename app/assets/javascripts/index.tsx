@@ -2,24 +2,28 @@ import "jquery";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {StationComponent} from "./components/stations";
-import {Station, IStation} from "./models/station";
+import {Station} from "./models/station";
 import {StationMessage} from "./messages/stationMessage";
 import {MessageType} from "./messages/messageType";
 import update = require("react-addons-update");
 
-interface MainProps {}
+interface MainProps {
+}
 
-interface MainState { stations: Station[] }
+interface MainState {
+    stations: Station[]
+}
 
 class Main extends React.Component<MainProps, MainState> {
     socket: WebSocket = new WebSocket("ws://" + window.location.host + "/stations");
+
     constructor(props: MainProps) {
         super(props);
         this.socket.onopen = (event: Event) => {
             console.log("Connected to %s!", this.socket.url);
         };
         this.socket.onmessage = (event: MessageEvent) => {
-            let msg:StationMessage = JSON.parse(event.data);
+            let msg: StationMessage = JSON.parse(event.data);
             if (msg.messageType === 1) {
                 this.setState(update(this.state, {stations: {$push: [msg.station]}}) as MainState)
             } else if (msg.messageType === 2) {
@@ -53,13 +57,14 @@ class Main extends React.Component<MainProps, MainState> {
             <div>
                 {this.state.stations
                     .sort((s1: Station, s2: Station) => (s1.id.charCodeAt(0) > s2.id.charCodeAt(0)) ? 1 : -1)
-                    .map(station => <StationComponent key={station.id} station={station} sendUpdate={this.sendUpdate}/>)}
+                    .map(station => <StationComponent key={station.id} station={station}
+                                                      sendUpdate={this.sendUpdate}/>)}
             </div>
         );
     }
 }
 
-$(function() {
+$(function () {
     ReactDOM.render(
         <Main/>,
         document.getElementById("main")

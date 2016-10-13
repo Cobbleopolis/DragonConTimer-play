@@ -1,4 +1,7 @@
-export interface IStation {id: string; time: number;}
+export interface IStation {
+    id: string;
+    time: number;
+}
 
 export class Station implements IStation {
 
