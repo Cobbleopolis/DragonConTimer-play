@@ -46,8 +46,11 @@ class Main extends React.Component<MainProps, MainState> {
         this.sendUpdate = this.sendUpdate.bind(this)
     }
 
-    sendUpdate(station: Station): any {
+    sendUpdate(station: Station, ...fieldKey: [string, any][]): any {
         station.time = Math.random() * 3600000;
+        fieldKey.forEach((fk) => {
+            station = update(station, {[fk[0]]: {$set: fk[1]}}) as Station;
+        });
         let message: StationMessage = new StationMessage(MessageType.UPDATE, station.id, station);
         this.socket.send(JSON.stringify(message))
     }
