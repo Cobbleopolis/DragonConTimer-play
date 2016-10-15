@@ -6,6 +6,7 @@ import {Station} from "./models/station";
 import {StationMessage} from "./messages/stationMessage";
 import {MessageType} from "./messages/messageType";
 import update = require("react-addons-update");
+import {Dictionary} from "./components/dictionary";
 
 interface MainProps {
 }
@@ -69,7 +70,7 @@ class Main extends React.Component<MainProps, MainState> {
 
 $(function () {
     ReactDOM.render(
-        <Main/>,
+        <Dictionary dictionary="main"><Main/></Dictionary>,
         document.getElementById("main")
     );
 });

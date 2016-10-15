@@ -2,6 +2,7 @@ import * as React from "react";
 import * as R from "react-bootstrap";
 import {Station} from "../models/station";
 import update = require("react-addons-update");
+import {Entry} from "./entry";
 
 export interface StationProps {
     station: Station,
@@ -92,7 +93,7 @@ export class StationComponent extends React.Component<StationProps, StationState
                         &nbsp;
                         <R.FormGroup style={{float: "right"}}>
                             <R.DropdownButton title="Actions" onSelect={this.actionSelected} id="actions">
-                                <R.MenuItem eventKey="clear">Clear</R.MenuItem>
+                                <R.MenuItem eventKey="clear"><Entry id="station.actions.clear"/></R.MenuItem>
                             </R.DropdownButton>
                         </R.FormGroup>
                     </R.Form>
