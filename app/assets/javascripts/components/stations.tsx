@@ -10,7 +10,7 @@ export interface StationsProps {
 }
 
 export interface StationsState {
-    stations: Station[]
+    stations: Map<string, Station>;
 }
 
 export class Stations extends React.Component<StationsProps, StationsState> {
@@ -23,15 +23,12 @@ export class Stations extends React.Component<StationsProps, StationsState> {
         };
         this.socket.onmessage = (event: MessageEvent) => {
             let msg: StationMessage = JSON.parse(event.data);
+            let updatedStations = this.state.stations;
             if (msg.messageType === 1) {
-                this.setState(update(this.state, {stations: {$push: [msg.station]}}) as StationsState)
+                updatedStations.set(msg.id, msg.station);
+                this.setState(update(this.state, {stations: {$set: updatedStations}}) as StationsState)
             } else if (msg.messageType === 2) {
-                let updatedStations = this.state.stations;
-                for (let i = 0; i <= updatedStations.length; i++)
-                    if (updatedStations[i].id === msg.id) {
-                        updatedStations[i] = msg.station;
-                        break;
-                    }
+                updatedStations.set(msg.id, msg.station);
                 this.setState(update(this.state, {stations: {$set: updatedStations}}) as StationsState)
             }
         };
@@ -41,7 +38,7 @@ export class Stations extends React.Component<StationsProps, StationsState> {
         this.socket.onclose = (event: CloseEvent) => {
             console.log(event);
         };
-        this.state = {stations: []};
+        this.state = {stations: new Map<string, Station>()};
         this.sendUpdate = this.sendUpdate.bind(this)
     }
 
@@ -55,12 +52,14 @@ export class Stations extends React.Component<StationsProps, StationsState> {
     }
 
     render() {
+        let stationElements: JSX.Element[] = [];
+        this.state.stations.forEach((v: Station, k: string) => {
+            stationElements.push(<StationComponent key={k} station={v} sendUpdate={this.sendUpdate} />)
+        });
+        stationElements = stationElements.sort((s1: JSX.Element, s2: JSX.Element) => (s1.props.station.id > s2.props.station.id) ? 1 : -1);
         return (
             <div>
-                {this.state.stations
-                    .sort((s1: Station, s2: Station) => (s1.id.charCodeAt(0) > s2.id.charCodeAt(0)) ? 1 : -1)
-                    .map(station => <StationComponent key={station.id} station={station}
-                                                      sendUpdate={this.sendUpdate}/>)}
+                {stationElements}
             </div>
         );
     }
