@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as R from "react-bootstrap";
 import {Station} from "../models/station";
+import {StationSetFieldsModal} from "./modals/station/stationSetFieldsModal";
 import update = require("react-addons-update");
 
 export interface StationProps {
@@ -9,6 +10,7 @@ export interface StationProps {
 }
 
 export interface StationState {
+    showSetFieldsModal: boolean;
 }
 
 const dangerPoint: number = 600000;
@@ -20,8 +22,12 @@ export class StationComponent extends React.Component<StationProps, StationState
 
     constructor(props: StationProps) {
         super(props);
+        this.state = {
+            showSetFieldsModal: false
+        };
         this.actionSelected = this.actionSelected.bind(this);
         this.clear = this.clear.bind(this);
+        this.closeSetFields = this.closeSetFields.bind(this);
     }
 
     handleChange(formField: string, e: any): void {
@@ -33,11 +39,21 @@ export class StationComponent extends React.Component<StationProps, StationState
             case "clear":
                 this.clear();
                 break;
+            case "setFields":
+                this.setState(update(this.state, {showSetFieldsModal: {$set: true}}) as StationState);
+                break;
+            default:
+                console.error("Unknown event key: " + eventKey);
         }
     }
 
+
     clear() {
         this.props.sendUpdate(this.props.station, ["name", ""], ["console", ""], ["game", ""]);
+    }
+
+    closeSetFields() {
+        this.setState(update(this.state, {showSetFieldsModal: {$set: false}}) as StationState);
     }
 
     render() {
@@ -71,7 +87,8 @@ export class StationComponent extends React.Component<StationProps, StationState
                         <R.FormGroup controlId="console">
                             <R.ControlLabel>Console</R.ControlLabel>
                             &nbsp;
-                            <R.FormControl value={this.props.station.console} componentClass="select" onChange={this.handleChange.bind(this, "console")}>
+                            <R.FormControl value={this.props.station.console} componentClass="select"
+                                           onChange={this.handleChange.bind(this, "console")}>
                                 <option value="" disabled hidden>Select One</option>
                                 <option value="xbox">Xbox One</option>
                                 <option value="ps4">Play Station 4</option>
@@ -82,7 +99,9 @@ export class StationComponent extends React.Component<StationProps, StationState
                         <R.FormGroup controlId="game">
                             <R.ControlLabel>Game</R.ControlLabel>
                             &nbsp;
-                            <R.FormControl disabled={this.props.station.console.length === 0} value={this.props.station.game} componentClass="select" onChange={this.handleChange.bind(this, "game")}>
+                            <R.FormControl disabled={this.props.station.console.length === 0}
+                                           value={this.props.station.game} componentClass="select"
+                                           onChange={this.handleChange.bind(this, "game")}>
                                 <option value="" disabled hidden>Select One</option>
                                 <option value="game1">Game 1</option>
                                 <option value="game2">Game 2</option>
@@ -92,11 +111,14 @@ export class StationComponent extends React.Component<StationProps, StationState
                         &nbsp;
                         <R.FormGroup style={{float: "right"}}>
                             <R.DropdownButton title="Actions" onSelect={this.actionSelected} id="actions">
+                                <R.MenuItem eventKey="setFields">Set Fields</R.MenuItem>
                                 <R.MenuItem eventKey="clear">Clear</R.MenuItem>
                             </R.DropdownButton>
                         </R.FormGroup>
                     </R.Form>
                 </div>
+                <StationSetFieldsModal show={this.state.showSetFieldsModal}
+                                       onClose={this.closeSetFields}/>
             </div>
         );
     }
