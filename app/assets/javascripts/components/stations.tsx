@@ -66,9 +66,11 @@ export class Stations extends React.Component<StationsProps, StationsState> {
 
     showSetFields(station: Station) {
         this.setState(update(this.state, {
-            setFields: {show: {$set: true},
-            boundStation: {$set: station}
-        }}) as StationsState);
+            setFields: {
+                show: {$set: true},
+                boundStation: {$set: station}
+            }
+        }) as StationsState);
     }
 
     closeSetFields() {
@@ -78,17 +80,23 @@ export class Stations extends React.Component<StationsProps, StationsState> {
         }) as StationsState);
     }
 
+    clearStation(station: Station) {
+        this.sendUpdate(station, ["name", ""], ["console", ""], ["game", ""]);
+    }
+
     render() {
         let stationElements: JSX.Element[] = [];
         this.state.stations.forEach((v: Station, k: string) => {
-            stationElements.push(<StationComponent key={k} station={v} showSetFields={this.showSetFields}/>)
+            stationElements.push(<StationComponent key={k} station={v} showSetFields={this.showSetFields}
+                                                   clearFields={this.clearStation.bind(this, v)}/>)
         });
         stationElements = stationElements.sort((s1: JSX.Element, s2: JSX.Element) => (s1.props.station.id > s2.props.station.id) ? 1 : -1);
         return (
             <div>
                 {stationElements}
                 <StationSetFieldsModal show={this.state.setFields.show}
-                                       onClose={this.closeSetFields} station={this.state.setFields.boundStation}/>
+                                       onClose={this.closeSetFields} updateValues={this.sendUpdate}
+                                       station={this.state.setFields.boundStation}/>
             </div>
         );
     }

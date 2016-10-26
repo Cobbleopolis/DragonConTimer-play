@@ -2,10 +2,12 @@ import * as React from "react";
 import * as R from "react-bootstrap";
 import {Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Button} from "react-bootstrap";
 import {Station} from "../../../models/station";
+import update = require("react-addons-update");
 
 export interface StationSetFieldsModalProps {
     show: boolean;
     onClose: () => void;
+    updateValues: (station: Station, ...fieldKey: [string, any][]) => void;
     station?: Station;
 }
 
@@ -19,47 +21,67 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
 
     constructor(props: StationSetFieldsModalProps) {
         super(props);
-        if (props.station)
+        if (props.station) {
+            console.log("Setting state");
             this.state = {
                 name: props.station.name,
                 console: props.station.console,
                 game: props.station.game
             };
-        else
+        } else {
             this.state = {
                 name: "",
                 console: "",
                 game: ""
             };
-        // this.onSubmit = this.onSubmit.bind(this);
+        }
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.onEnter = this.onEnter.bind(this);
     }
 
-    onSubmit(event: any) {
-        console.log(typeof event);
-        console.log(event.target());
+    onEnter() {
+        this.setState({
+            name: this.props.station.name,
+            console: this.props.station.console,
+            game: this.props.station.game
+        });
+    }
+
+    handleChange(fieldName: string, event: any) {
+        this.setState(update(this.state, {[fieldName]: {$set: event.target.value}}) as StationSetFieldsModalState)
+    }
+
+    handleSubmit(event: any) {
+        this.props.updateValues(this.props.station,
+            ["name", this.state.name],
+            ["console", this.state.console],
+            ["game", this.state.game]
+        );
+        this.props.onClose();
         event.preventDefault();
     }
 
     render() {
         return (
-            <Modal show={this.props.show} onHide={this.props.onClose}>
+            <Modal show={this.props.show} onEnter={this.onEnter} onHide={this.props.onClose}>
                 <ModalHeader closeButton>
                     <ModalTitle>Set Fields</ModalTitle>
                 </ModalHeader>
-                <form></form>
 
-                <R.Form onSubmit={this.onSubmit}>
+                <R.Form>
                     <ModalBody>
                         <R.FormGroup controlId="name">
                             <R.ControlLabel>Name</R.ControlLabel>
                             &nbsp;
-                            <R.FormControl value={this.state.name} type="text" placeholder="John Doe"/>
+                            <R.FormControl value={this.state.name} onChange={this.handleChange.bind(this, "name")}
+                                           type="text" placeholder="John Doe"/>
                         </R.FormGroup>
                         &nbsp;
                         <R.FormGroup controlId="console">
                             <R.ControlLabel>Console</R.ControlLabel>
                             &nbsp;
-                            <R.FormControl value={this.state.console} componentClass="select">
+                            <R.FormControl value={this.state.console} onChange={this.handleChange.bind(this, "console")}
+                                           componentClass="select">
                                 <option value="" disabled hidden>Select One</option>
                                 <option value="xbox">Xbox One</option>
                                 <option value="ps4">Play Station 4</option>
@@ -71,7 +93,8 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
                             <R.ControlLabel>Game</R.ControlLabel>
                             &nbsp;
                             <R.FormControl disabled={this.state.console.length === 0}
-                                           value={this.state.game} componentClass="select">
+                                           value={this.state.game} onChange={this.handleChange.bind(this, "game")}
+                                           componentClass="select">
                                 <option value="" disabled hidden>Select One</option>
                                 <option value="game1">Game 1</option>
                                 <option value="game2">Game 2</option>
@@ -82,7 +105,7 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={this.props.onClose}>Close</Button>
-                        <Button type="submit" onClick={(event: any) => {console.log(event); event.preventDefault()}}>Save</Button>
+                        <Button type="submit" onClick={this.handleSubmit}>Save</Button>
                     </ModalFooter>
                 </R.Form>
             </Modal>

@@ -5,7 +5,8 @@ import update = require("react-addons-update");
 
 export interface StationProps {
     station: Station;
-    showSetFields: (station: Station) => void
+    showSetFields: (station: Station) => void;
+    clearFields: () => void;
 }
 
 export interface StationState {
@@ -25,14 +26,13 @@ export class StationComponent extends React.Component<StationProps, StationState
             showSetFieldsModal: false
         };
         this.actionSelected = this.actionSelected.bind(this);
-        this.clear = this.clear.bind(this);
         this.closeSetFields = this.closeSetFields.bind(this);
     }
 
     actionSelected(eventKey: any): void {
         switch (eventKey) {
             case "clear": {
-                this.clear();
+                this.props.clearFields();
                 break;
             }
             case "setFields": {
@@ -44,13 +44,6 @@ export class StationComponent extends React.Component<StationProps, StationState
                 break;
             }
         }
-    }
-
-
-    clear() {
-        //TODO Reimplement
-        console.log("Reimplemnt");
-        // this.props.sendUpdate(this.props.station, ["name", ""], ["console", ""], ["game", ""]);
     }
 
     closeSetFields() {
