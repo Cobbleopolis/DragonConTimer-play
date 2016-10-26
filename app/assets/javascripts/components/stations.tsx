@@ -3,6 +3,7 @@ import {Station} from "../models/station";
 import {StationMessage} from "../messages/stationMessage";
 import {MessageType} from "../messages/messageType";
 import {StationComponent} from "./station";
+import {StationSetFieldsModal} from "./modals/station/stationSetFieldsModal";
 import update = require("react-addons-update");
 
 export interface StationsProps {
@@ -11,6 +12,10 @@ export interface StationsProps {
 
 export interface StationsState {
     stations: Map<string, Station>;
+    setFields: {
+        show: boolean;
+        boundStation: Station;
+    };
 }
 
 export class Stations extends React.Component<StationsProps, StationsState> {
@@ -38,8 +43,16 @@ export class Stations extends React.Component<StationsProps, StationsState> {
         this.socket.onclose = (event: CloseEvent) => {
             console.log(event);
         };
-        this.state = {stations: new Map<string, Station>()};
-        this.sendUpdate = this.sendUpdate.bind(this)
+        this.state = {
+            stations: new Map<string, Station>(),
+            setFields: {
+                show: false,
+                boundStation: null
+            }
+        };
+        this.sendUpdate = this.sendUpdate.bind(this);
+        this.showSetFields = this.showSetFields.bind(this);
+        this.closeSetFields = this.closeSetFields.bind(this)
     }
 
     sendUpdate(station: Station, ...fieldKey: [string, any][]): any {
@@ -51,15 +64,31 @@ export class Stations extends React.Component<StationsProps, StationsState> {
         this.socket.send(JSON.stringify(message))
     }
 
+    showSetFields(station: Station) {
+        this.setState(update(this.state, {
+            setFields: {show: {$set: true},
+            boundStation: {$set: station}
+        }}) as StationsState);
+    }
+
+    closeSetFields() {
+        this.setState(update(this.state, {
+            setFields: {show: {$set: false}},
+            boundStation: {$set: null}
+        }) as StationsState);
+    }
+
     render() {
         let stationElements: JSX.Element[] = [];
         this.state.stations.forEach((v: Station, k: string) => {
-            stationElements.push(<StationComponent key={k} station={v} sendUpdate={this.sendUpdate} />)
+            stationElements.push(<StationComponent key={k} station={v} showSetFields={this.showSetFields}/>)
         });
         stationElements = stationElements.sort((s1: JSX.Element, s2: JSX.Element) => (s1.props.station.id > s2.props.station.id) ? 1 : -1);
         return (
             <div>
                 {stationElements}
+                <StationSetFieldsModal show={this.state.setFields.show}
+                                       onClose={this.closeSetFields} station={this.state.setFields.boundStation}/>
             </div>
         );
     }

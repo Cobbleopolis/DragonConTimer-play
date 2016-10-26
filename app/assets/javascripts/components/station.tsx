@@ -1,12 +1,11 @@
 import * as React from "react";
 import * as R from "react-bootstrap";
 import {Station} from "../models/station";
-import {StationSetFieldsModal} from "./modals/station/stationSetFieldsModal";
 import update = require("react-addons-update");
 
 export interface StationProps {
-    station: Station,
-    sendUpdate: (station: Station, ...fieldKey: [string, any][]) => any
+    station: Station;
+    showSetFields: (station: Station) => void
 }
 
 export interface StationState {
@@ -30,26 +29,28 @@ export class StationComponent extends React.Component<StationProps, StationState
         this.closeSetFields = this.closeSetFields.bind(this);
     }
 
-    handleChange(formField: string, e: any): void {
-        this.props.sendUpdate(this.props.station, [formField, e.target.value])
-    }
-
     actionSelected(eventKey: any): void {
         switch (eventKey) {
-            case "clear":
+            case "clear": {
                 this.clear();
                 break;
-            case "setFields":
-                this.setState(update(this.state, {showSetFieldsModal: {$set: true}}) as StationState);
+            }
+            case "setFields": {
+                this.props.showSetFields(this.props.station);
                 break;
-            default:
+            }
+            default: {
                 console.error("Unknown event key: " + eventKey);
+                break;
+            }
         }
     }
 
 
     clear() {
-        this.props.sendUpdate(this.props.station, ["name", ""], ["console", ""], ["game", ""]);
+        //TODO Reimplement
+        console.log("Reimplemnt");
+        // this.props.sendUpdate(this.props.station, ["name", ""], ["console", ""], ["game", ""]);
     }
 
     closeSetFields() {
@@ -80,33 +81,19 @@ export class StationComponent extends React.Component<StationProps, StationState
                         <R.FormGroup controlId="name">
                             <R.ControlLabel>Name</R.ControlLabel>
                             &nbsp;
-                            <R.FormControl value={this.props.station.name} type="text" placeholder="John Doe"
-                                           onChange={this.handleChange.bind(this, "name")}/>
+                            <R.FormControl value={this.props.station.name} type="text" placeholder="John Doe" disabled/>
                         </R.FormGroup>
                         &nbsp;
                         <R.FormGroup controlId="console">
                             <R.ControlLabel>Console</R.ControlLabel>
                             &nbsp;
-                            <R.FormControl value={this.props.station.console} componentClass="select"
-                                           onChange={this.handleChange.bind(this, "console")}>
-                                <option value="" disabled hidden>Select One</option>
-                                <option value="xbox">Xbox One</option>
-                                <option value="ps4">Play Station 4</option>
-                                <option value="wiiu">Wii U</option>
-                            </R.FormControl>
+                            <R.FormControl value={this.props.station.console} type="text" placeholder="" disabled/>
                         </R.FormGroup>
                         &nbsp;
                         <R.FormGroup controlId="game">
                             <R.ControlLabel>Game</R.ControlLabel>
                             &nbsp;
-                            <R.FormControl disabled={this.props.station.console.length === 0}
-                                           value={this.props.station.game} componentClass="select"
-                                           onChange={this.handleChange.bind(this, "game")}>
-                                <option value="" disabled hidden>Select One</option>
-                                <option value="game1">Game 1</option>
-                                <option value="game2">Game 2</option>
-                                <option value="game3">Game 3</option>
-                            </R.FormControl>
+                            <R.FormControl value={this.props.station.game} type="text" placeholder="" disabled/>
                         </R.FormGroup>
                         &nbsp;
                         <R.FormGroup style={{float: "right"}}>
@@ -117,8 +104,6 @@ export class StationComponent extends React.Component<StationProps, StationState
                         </R.FormGroup>
                     </R.Form>
                 </div>
-                <StationSetFieldsModal show={this.state.showSetFieldsModal}
-                                       onClose={this.closeSetFields}/>
             </div>
         );
     }
