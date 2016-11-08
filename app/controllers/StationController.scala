@@ -14,24 +14,19 @@ import sockets.StationSocket.messageFlowTransformer
 
 class StationController @Inject() (implicit system: ActorSystem, materializer: Materializer) extends Controller {
 
-    val store: Map[String, Station] = Map[String, Station](
-        "A" -> Station("A", 3600000f),
-        "B" -> Station("B", 3600000f / 2)
-    )
-
     implicit val stationFormat = Json.format[Station]
 
     def getAll = Action {
-        Ok(Json.toJson(store.values))
+        Ok(Json.toJson(Station.store))
     }
 
     def getKeys = Action {
-        Ok(Json.toJson(store.keys))
+        Ok(Json.toJson(Station.store.keys))
     }
 
     def get(id: String) = Action {
-        if (store.contains(id))
-            Ok(Json.toJson(store.get(id)))
+        if (Station.store.contains(id))
+            Ok(Json.toJson(Station.store.get(id)))
         else
             NotFound
     }

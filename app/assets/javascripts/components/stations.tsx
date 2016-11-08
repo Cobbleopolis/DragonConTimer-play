@@ -23,6 +23,13 @@ export class Stations extends React.Component<StationsProps, StationsState> {
 
     constructor(props: StationsProps) {
         super(props);
+        $.getJSON("data/stations", (data: any) => {
+            let initialStations: Map<string, Station> = new Map<string, Station>();
+            for(let key in data)
+                if (data.hasOwnProperty(key))
+                    initialStations.set(key, data[key]);
+            this.setState(update(this.state, {stations: {$set: initialStations}}) as StationsState)
+        });
         this.socket.onopen = (event: Event) => {
             console.log("Connected to %s!", this.socket.url);
         };
@@ -50,6 +57,11 @@ export class Stations extends React.Component<StationsProps, StationsState> {
                 boundStation: null
             }
         };
+        setInterval(() => {
+            let updatedStations = this.state.stations;
+            updatedStations.forEach((station: Station) => station.time -= 1000);
+            this.setState(update(this.state, {stations: {$set: updatedStations}}) as StationsState)
+        }, 1000);
         this.sendUpdate = this.sendUpdate.bind(this);
         this.showSetFields = this.showSetFields.bind(this);
         this.closeSetFields = this.closeSetFields.bind(this)
@@ -93,6 +105,7 @@ export class Stations extends React.Component<StationsProps, StationsState> {
         stationElements = stationElements.sort((s1: JSX.Element, s2: JSX.Element) => (s1.props.station.id > s2.props.station.id) ? 1 : -1);
         return (
             <div>
+                <p>{stationElements.length}</p>
                 {stationElements}
                 <StationSetFieldsModal show={this.state.setFields.show}
                                        onClose={this.closeSetFields} updateValues={this.sendUpdate}

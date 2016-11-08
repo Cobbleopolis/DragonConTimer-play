@@ -16,16 +16,11 @@ object StationSocket {
     def broadcast(msg: StationMessage) = connectedClients.foreach(client => client ! msg)
 
     implicit val messageFlowTransformer = MessageFlowTransformer.jsonMessageFlowTransformer[StationMessage, StationMessage]
-
-    var store: Map[String, Station] = Map(('A' to 'Z').map(c => c.toString -> Station(c.toString, Math.random().toFloat * 3600000f)): _*)
 }
 
 class StationSocket(out: ActorRef) extends Actor {
 
     StationSocket.connectedClients += out
-
-    for ((key, value) <- StationSocket.store)
-        out ! StationMessage(MessageType.ADD, key, value)
 
     def receive = {
         case msg: StationMessage =>
@@ -33,9 +28,9 @@ class StationSocket(out: ActorRef) extends Actor {
                 self ! PoisonPill
             msg.messageType match {
                 case MessageType.UPDATE =>
-                    StationSocket.store += (msg.id -> msg.station)
+                    Station.store += (msg.id -> msg.station)
             }
-            StationSocket.broadcast(StationMessage(MessageType.UPDATE, msg.id, StationSocket.store(msg.id)))
+            StationSocket.broadcast(msg)
     }
 
     override def postStop(): Unit = {
