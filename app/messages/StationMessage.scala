@@ -1,8 +1,7 @@
 package messages
 
-import messages.MessageType.MessageType
-import models.Station
+import messages.StationMessageType.MessageType
 
-case class StationMessage(messageType: MessageType, id: String, station: Station) {
+case class StationMessage(messageType: MessageType, id: String, updatedTime: Option[Float] = None, updatedName: Option[String] = None, updatedConsole: Option[String] = None, updatedGame: Option[String] = None) {
 
 }

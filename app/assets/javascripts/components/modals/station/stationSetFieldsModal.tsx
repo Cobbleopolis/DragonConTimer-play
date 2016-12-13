@@ -7,7 +7,7 @@ import update = require("react-addons-update");
 export interface StationSetFieldsModalProps {
     show: boolean;
     onClose: () => void;
-    updateValues: (station: Station, ...fieldKey: [string, any][]) => void;
+    updateValues: (station: Station, updatedName: string, updatedConsole: string, updatedGame: string) => void;
     station?: Station;
 }
 
@@ -53,9 +53,9 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
 
     handleSubmit(event: any) {
         this.props.updateValues(this.props.station,
-            ["name", this.state.name],
-            ["console", this.state.console],
-            ["game", this.state.game]
+            this.state.name,
+            this.state.console,
+            this.state.game
         );
         this.props.onClose();
         event.preventDefault();
@@ -105,7 +105,7 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={this.props.onClose}>Close</Button>
-                        <Button type="submit" onClick={this.handleSubmit}>Save</Button>
+                        <Button type="submit" bsStyle="success" onClick={this.handleSubmit}>Save</Button>
                     </ModalFooter>
                 </R.Form>
             </Modal>

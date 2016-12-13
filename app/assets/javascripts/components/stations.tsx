@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Station} from "../models/station";
 import {StationMessage} from "../messages/stationMessage";
-import {MessageType} from "../messages/messageType";
+import {StationMessageType} from "../messages/stationMessageType";
 import {StationComponent} from "./station";
 import {StationSetFieldsModal} from "./modals/station/stationSetFieldsModal";
 import update = require("react-addons-update");
@@ -25,7 +25,7 @@ export class Stations extends React.Component<StationsProps, StationsState> {
         super(props);
         $.getJSON("data/stations", (data: any) => {
             let initialStations: Map<string, Station> = new Map<string, Station>();
-            for(let key in data)
+            for (let key in data)
                 if (data.hasOwnProperty(key))
                     initialStations.set(key, data[key]);
             this.setState(update(this.state, {stations: {$set: initialStations}}) as StationsState)
@@ -34,15 +34,23 @@ export class Stations extends React.Component<StationsProps, StationsState> {
             console.log("Connected to %s!", this.socket.url);
         };
         this.socket.onmessage = (event: MessageEvent) => {
-            let msg: StationMessage = JSON.parse(event.data);
             let updatedStations = this.state.stations;
-            if (msg.messageType === 1) {
-                updatedStations.set(msg.id, msg.station);
-                this.setState(update(this.state, {stations: {$set: updatedStations}}) as StationsState)
-            } else if (msg.messageType === 2) {
-                updatedStations.set(msg.id, msg.station);
-                this.setState(update(this.state, {stations: {$set: updatedStations}}) as StationsState)
-            }
+            (JSON.parse(event.data) as StationMessage[]).map(stationMsg => {
+                let station = updatedStations.get(stationMsg.id);
+                if (stationMsg.messageType == StationMessageType.TIME_UPDATE) {
+                    if (stationMsg.updatedTime !== undefined)
+                        station.time = stationMsg.updatedTime;
+                } else if (stationMsg.messageType == StationMessageType.FIELD_UPDATE) {
+                    if (stationMsg.updatedName !== undefined)
+                        station.name = stationMsg.updatedName;
+                    if (stationMsg.updatedConsole !== undefined)
+                        station.console = stationMsg.updatedConsole;
+                    if (stationMsg.updatedGame !== undefined)
+                        station.game = stationMsg.updatedGame;
+                }
+                updatedStations.set(stationMsg.id, station);
+            });
+            this.setState(update(this.state, {stations: {$set: updatedStations}}) as StationsState);
         };
         this.socket.onerror = (event: Event) => {
             console.log(event);
@@ -62,18 +70,21 @@ export class Stations extends React.Component<StationsProps, StationsState> {
             updatedStations.forEach((station: Station) => station.time -= 1000);
             this.setState(update(this.state, {stations: {$set: updatedStations}}) as StationsState)
         }, 1000);
-        this.sendUpdate = this.sendUpdate.bind(this);
+        this.sendFieldUpdates = this.sendFieldUpdates.bind(this);
         this.showSetFields = this.showSetFields.bind(this);
         this.closeSetFields = this.closeSetFields.bind(this)
     }
 
-    sendUpdate(station: Station, ...fieldKey: [string, any][]): any {
-        station.time = Math.random() * 3600000;
-        fieldKey.forEach((fk) => {
-            station = update(station, {[fk[0]]: {$set: fk[1]}}) as Station;
-        });
-        let message: StationMessage = new StationMessage(MessageType.UPDATE, station.id, station);
-        this.socket.send(JSON.stringify(message))
+    sendFieldUpdates(station: Station, updatedName: string, updatedConsole: string, updatedGame: string): any {
+        // station.time = Math.random() * 3600000;
+        let message: StationMessage = {
+            messageType: StationMessageType.FIELD_UPDATE,
+            id: station.id,
+            updatedName: updatedName,
+            updatedConsole: updatedConsole,
+            updatedGame: updatedGame
+        };
+        this.socket.send(JSON.stringify([message]))
     }
 
     showSetFields(station: Station) {
@@ -93,7 +104,7 @@ export class Stations extends React.Component<StationsProps, StationsState> {
     }
 
     clearStation(station: Station) {
-        this.sendUpdate(station, ["name", ""], ["console", ""], ["game", ""]);
+        this.sendFieldUpdates(station, "", "", "");
     }
 
     render() {
@@ -108,7 +119,7 @@ export class Stations extends React.Component<StationsProps, StationsState> {
                 <p>{stationElements.length}</p>
                 {stationElements}
                 <StationSetFieldsModal show={this.state.setFields.show}
-                                       onClose={this.closeSetFields} updateValues={this.sendUpdate}
+                                       onClose={this.closeSetFields} updateValues={this.sendFieldUpdates}
                                        station={this.state.setFields.boundStation}/>
             </div>
         );

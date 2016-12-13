@@ -31,7 +31,7 @@ class StationController @Inject() (implicit system: ActorSystem, materializer: M
             NotFound
     }
 
-    def socket = WebSocket.accept[StationMessage, StationMessage]{ request =>
+    def socket = WebSocket.accept[Array[StationMessage], Array[StationMessage]]{ request =>
         ActorFlow.actorRef(out => StationSocket.props(out))
     }
 

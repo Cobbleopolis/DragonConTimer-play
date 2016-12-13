@@ -1,25 +1,22 @@
-import {Station} from "../models/station";
+import {StationMessageType} from "./stationMessageType";
 
 interface IStationMessage {
-    messageType:number;
+
+}
+
+export class StationMessage {
+
+    messageType:StationMessageType;
 
     id: string;
 
-    station:Station;
-}
+    updatedTime?:number;
 
-export class StationMessage implements IStationMessage {
-    public messageType:number;
+    updatedName?:string;
 
-    public id:string;
+    updatedConsole?:string;
 
-    public station:Station;
-
-    constructor(messageType:number, id:string, station?:Station) {
-        this.messageType = messageType;
-        this.id = id;
-        this.station = station
-    }
+    updatedGame?:string;
 
     static fromJSON(obj:IStationMessage):StationMessage {
         return $.extend({}, obj);
