@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ps4",
+    "name": "PlayStation 4",
+    "games": [
+      {
+        "name": "Bloodborne",
+        "count": 4
+      },
+      {
+        "name": "Horizon Zero Dawn",
+        "count": 6
+      }
+    ]
+  },
+  {
+    "id": "xbox1",
+    "name": "Xbox One",
+    "games": [
+      {
+        "name": "Minecraft Xbox One Edition",
+        "count": 3
+      },
+      {
+        "name": "Plants vs. Zombies Garden Warfare 2",
+        "count": 8
+      },
+      {
+        "name": "Injustice 2 Ultimate Edition",
+        "count": 5
+      }
+    ]
+  }
+]
