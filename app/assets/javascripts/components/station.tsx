@@ -1,6 +1,8 @@
 import * as React from "react";
 import * as R from "react-bootstrap";
 import {Station} from "../models/station";
+import {Console} from "../models/console";
+import {ConsoleStore} from "../store/consoleStore";
 import update = require("react-addons-update");
 
 export interface StationProps {
@@ -64,6 +66,7 @@ export class StationComponent extends React.Component<StationProps, StationState
         let minDisplay: string = (min != 0) ? `${min}min` : "";
         let sec: number = Math.floor(this.props.station.time % 60000 / 1000);
         let secDisplay: string = (sec != 0) ? `${sec}sec` : "";
+        let selectedConsole: Console = ConsoleStore.getConsole(this.props.station.console);
         return (
             <div className="panel panel-default">
                 <div className="panel-heading">{this.props.station.id}</div>
@@ -80,7 +83,7 @@ export class StationComponent extends React.Component<StationProps, StationState
                         <R.FormGroup controlId="console">
                             <R.ControlLabel>Console</R.ControlLabel>
                             &nbsp;
-                            <R.FormControl value={this.props.station.console} type="text" placeholder="" disabled/>
+                            <R.FormControl value={selectedConsole.name} type="text" placeholder="" disabled/>
                         </R.FormGroup>
                         &nbsp;
                         <R.FormGroup controlId="game">

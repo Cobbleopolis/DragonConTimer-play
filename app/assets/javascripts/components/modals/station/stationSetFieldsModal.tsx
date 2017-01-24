@@ -2,6 +2,8 @@ import * as React from "react";
 import * as R from "react-bootstrap";
 import {Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Button} from "react-bootstrap";
 import {Station} from "../../../models/station";
+import {ConsoleStore} from "../../../store/consoleStore";
+import {Console} from "../../../models/console";
 import update = require("react-addons-update");
 
 export interface StationSetFieldsModalProps {
@@ -62,6 +64,13 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
     }
 
     render() {
+        let consoleDropdown: JSX.Element[] = [];
+        ConsoleStore.consoles.forEach((v: Console) => {
+            consoleDropdown.push(<option key={v.id} value={v.id}>{v.name}</option>);
+        });
+        let gameDropdown: JSX.Element[] = [];
+        ConsoleStore.getConsole(this.state.console).games.forEach(game => gameDropdown.push(<option key={game.name} value={game.name}>{game.name}</option>));
+        gameDropdown = gameDropdown.sort((g1: JSX.Element, g2: JSX.Element) => g1.props.value.localeCompare(g2.props.value));
         return (
             <Modal show={this.props.show} onEnter={this.onEnter} onHide={this.props.onClose}>
                 <ModalHeader closeButton>
@@ -83,9 +92,7 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
                             <R.FormControl value={this.state.console} onChange={this.handleChange.bind(this, "console")}
                                            componentClass="select">
                                 <option value="" disabled hidden>Select One</option>
-                                <option value="xbox">Xbox One</option>
-                                <option value="ps4">Play Station 4</option>
-                                <option value="wiiu">Wii U</option>
+                                {consoleDropdown}
                             </R.FormControl>
                         </R.FormGroup>
                         &nbsp;
@@ -96,9 +103,7 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
                                            value={this.state.game} onChange={this.handleChange.bind(this, "game")}
                                            componentClass="select">
                                 <option value="" disabled hidden>Select One</option>
-                                <option value="game1">Game 1</option>
-                                <option value="game2">Game 2</option>
-                                <option value="game3">Game 3</option>
+                                {gameDropdown}
                             </R.FormControl>
                         </R.FormGroup>
 
