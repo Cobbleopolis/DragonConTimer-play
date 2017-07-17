@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as R from "react-bootstrap";
-import {Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Button} from "react-bootstrap";
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle} from "react-bootstrap";
 import {Station} from "../../../models/station";
 import {ConsoleStore} from "../../../store/consoleStore";
 import {Console} from "../../../models/console";
@@ -69,7 +69,7 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
             consoleDropdown.push(<option key={v.id} value={v.id}>{v.name}</option>);
         });
         let gameDropdown: JSX.Element[] = [];
-        ConsoleStore.getConsole(this.state.console).games.forEach(game => gameDropdown.push(<option key={game.name} value={game.name}>{game.name}</option>));
+        ConsoleStore.getConsole(this.state.console).games.forEach(game => gameDropdown.push(<option key={game} value={game}>{game}</option>));
         gameDropdown = gameDropdown.sort((g1: JSX.Element, g2: JSX.Element) => g1.props.value.localeCompare(g2.props.value));
         return (
             <Modal show={this.props.show} onEnter={this.onEnter} onHide={this.props.onClose}>

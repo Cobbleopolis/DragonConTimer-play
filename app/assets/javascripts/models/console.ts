@@ -1,8 +1,7 @@
-import {Game} from "./game";
 export interface IConsole {
     id: string;
     name: string;
-    games: Game[];
+    games: string[];
 }
 
 export class Console implements IConsole {
@@ -11,9 +10,9 @@ export class Console implements IConsole {
 
     public name: string;
 
-    public games: Game[];
+    public games: string[];
 
-    constructor(id: string, name: string, games: Game[]) {
+    constructor(id: string, name: string, games: string[]) {
         this.id = id;
         this.name = name;
         this.games = games;

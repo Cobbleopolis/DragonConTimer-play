@@ -2,7 +2,7 @@ package models
 
 import play.api.cache.CacheApi
 
-case class Console(id: String, name: String, games: Array[Game]) {
+case class Console(id: String, name: String, games: Array[String]) {
 
 }
 
