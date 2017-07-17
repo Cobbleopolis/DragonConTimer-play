@@ -67,7 +67,7 @@ export class Stations extends React.Component<StationsProps, StationsState> {
         };
         setInterval(() => {
             let updatedStations = this.state.stations;
-            updatedStations.forEach((station: Station) => station.time -= 1000);
+            updatedStations.forEach((station: Station) => station.time = Math.max(station.time - 1000, 0));
             this.setState(update(this.state, {stations: {$set: updatedStations}}) as StationsState)
         }, 1000);
         this.sendFieldUpdates = this.sendFieldUpdates.bind(this);

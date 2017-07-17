@@ -68,7 +68,7 @@ export class StationComponent extends React.Component<StationProps, StationState
         let secDisplay: string = (sec != 0) ? `${sec}sec` : "";
         let selectedConsole: Console = ConsoleStore.getConsole(this.props.station.console);
         return (
-            <div className="panel panel-default">
+            <div className={"panel panel-" + ((this.props.station.time <= 0)? "danger" :"default")}>
                 <div className="panel-heading">{this.props.station.id}</div>
                 <div className="panel-body">
                     <R.ProgressBar bsStyle={progressBarStyle} now={this.props.station.time} max={3600000}

@@ -17,6 +17,6 @@ object Station {
     def tick(time: Duration, id: String): Unit = {
         val stationOpt: Option[Station] = store.get(id)
         if(stationOpt.isDefined)
-            store(id).time -= time.toMillis
+            store(id).time = Math.max(store(id).time - time.toMillis, 0)
     }
 }
