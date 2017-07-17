@@ -4,7 +4,7 @@ import javax.inject.{Inject, Singleton}
 
 import com.google.inject.ImplementedBy
 import models.Console
-import play.api.{Configuration, Environment}
+import play.api.{Configuration, Logger}
 
 import scala.collection.mutable
 
@@ -17,9 +17,12 @@ trait ConsoleStore {
 }
 
 @Singleton
-class ConsoleStoreImpl @Inject()(config: Configuration, env: Environment) extends  ConsoleStore {
+class ConsoleStoreImpl @Inject()(config: Configuration) extends ConsoleStore {
 
     private val consoles: mutable.Map[String, Console] = mutable.Map[String, Console]()
+
+    if(config.getConfigSeq("dc-timer.consoles").isEmpty)
+        Logger.error("Console config not defined!")
 
     private val consoleSeq: Seq[Console] = config.getConfigSeq("dc-timer.consoles").get.map(conf =>
         Console(

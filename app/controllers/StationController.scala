@@ -6,33 +6,34 @@ import akka.actor.ActorSystem
 import akka.stream.Materializer
 import messages.StationMessage
 import models._
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 import play.api.libs.streams.ActorFlow
 import play.api.mvc._
 import sockets.StationSocket
 import sockets.StationSocket.messageFlowTransformer
+import store.StationStore
 
-class StationController @Inject() (implicit system: ActorSystem, materializer: Materializer) extends Controller {
+class StationController @Inject() (implicit system: ActorSystem, materializer: Materializer, stationStore: StationStore) extends Controller {
 
-    implicit val stationFormat = Json.format[Station]
+    implicit val stationFormat: OFormat[Station] = Json.format[Station]
 
     def getAll = Action {
-        Ok(Json.toJson(Station.store))
+        Ok(Json.toJson(stationStore.map))
     }
 
     def getKeys = Action {
-        Ok(Json.toJson(Station.store.keys))
+        Ok(Json.toJson(stationStore.keys))
     }
 
     def get(id: String) = Action {
-        if (Station.store.contains(id))
-            Ok(Json.toJson(Station.store.get(id)))
+        if (stationStore.contains(id))
+            Ok(Json.toJson(stationStore.get(id)))
         else
             NotFound
     }
 
-    def socket = WebSocket.accept[Array[StationMessage], Array[StationMessage]]{ request =>
-        ActorFlow.actorRef(out => StationSocket.props(out))
+    def socket: WebSocket = WebSocket.accept[Array[StationMessage], Array[StationMessage]]{ _ =>
+        ActorFlow.actorRef(out => StationSocket.props(out, stationStore))
     }
 
 }
