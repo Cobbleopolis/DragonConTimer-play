@@ -3,6 +3,7 @@ import * as R from "react-bootstrap";
 import {Station} from "../models/station";
 import {Console} from "../models/console";
 import {ConsoleStore} from "../store/consoleStore";
+import {StationRef} from "../reference/stationRef";
 import update = require("react-addons-update");
 
 export interface StationProps {
@@ -74,9 +75,9 @@ export class StationComponent extends React.Component<StationProps, StationState
         let selectedConsole: Console = ConsoleStore.getConsole(this.props.station.console);
         return (
             <div className={"panel panel-" + ((this.props.station.time <= 0)? "danger" :"default")}>
-                <div className="panel-heading">{this.props.station.id}</div>
+                <div className="panel-heading">{this.props.station.id} ({this.props.station.consoleOptions.map(consoleId => ConsoleStore.getConsole(consoleId).name).join(", ")})</div>
                 <div className="panel-body">
-                    <R.ProgressBar bsStyle={progressBarStyle} now={this.props.station.time} max={3600000}
+                    <R.ProgressBar bsStyle={progressBarStyle} now={this.props.station.time} max={StationRef.MAX_STATION_TIME}
                                    label={(minDisplay + " " + secDisplay).trim()}/>
                     <R.Form inline>
                         <R.FormGroup controlId="name">
