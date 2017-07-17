@@ -9,6 +9,7 @@ export interface StationProps {
     station: Station;
     showSetFields: (station: Station) => void;
     clearFields: () => void;
+    resetTime: () => void;
 }
 
 export interface StationState {
@@ -39,6 +40,10 @@ export class StationComponent extends React.Component<StationProps, StationState
             }
             case "setFields": {
                 this.props.showSetFields(this.props.station);
+                break;
+            }
+            case "resetTime": {
+                this.props.resetTime();
                 break;
             }
             default: {
@@ -95,6 +100,7 @@ export class StationComponent extends React.Component<StationProps, StationState
                         <R.FormGroup style={{float: "right"}}>
                             <R.DropdownButton title="Actions" onSelect={this.actionSelected} id="actions">
                                 <R.MenuItem eventKey="setFields">Set Fields</R.MenuItem>
+                                <R.MenuItem eventKey="resetTime">Reset Time</R.MenuItem>
                                 <R.MenuItem eventKey="clear">Clear</R.MenuItem>
                             </R.DropdownButton>
                         </R.FormGroup>

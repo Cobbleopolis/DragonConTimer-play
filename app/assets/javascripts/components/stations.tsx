@@ -4,6 +4,7 @@ import {StationMessage} from "../messages/stationMessage";
 import {StationMessageType} from "../messages/stationMessageType";
 import {StationComponent} from "./station";
 import {StationSetFieldsModal} from "./modals/station/stationSetFieldsModal";
+import {StationRef} from "../reference/stationRef";
 import update = require("react-addons-update");
 
 export interface StationsProps {
@@ -47,6 +48,8 @@ export class Stations extends React.Component<StationsProps, StationsState> {
                         station.console = stationMsg.updatedConsole;
                     if (stationMsg.updatedGame !== undefined)
                         station.game = stationMsg.updatedGame;
+                } else if (stationMsg.messageType == StationMessageType.TIME_RESET) {
+                    station.time = StationRef.MAX_STATION_TIME
                 }
                 updatedStations.set(stationMsg.id, station);
             });
@@ -87,6 +90,14 @@ export class Stations extends React.Component<StationsProps, StationsState> {
         this.socket.send(JSON.stringify([message]))
     }
 
+    resetTime(station: Station) {
+        let message: StationMessage = {
+            messageType: StationMessageType.TIME_RESET,
+            id: station.id
+        };
+        this.socket.send(JSON.stringify([message]))
+    }
+
     showSetFields(station: Station) {
         this.setState(update(this.state, {
             setFields: {
@@ -111,7 +122,7 @@ export class Stations extends React.Component<StationsProps, StationsState> {
         let stationElements: JSX.Element[] = [];
         this.state.stations.forEach((v: Station, k: string) => {
             stationElements.push(<StationComponent key={k} station={v} showSetFields={this.showSetFields}
-                                                   clearFields={this.clearStation.bind(this, v)}/>)
+                                                   resetTime={this.resetTime.bind(this, v)} clearFields={this.clearStation.bind(this, v)}/>)
         });
         stationElements = stationElements.sort((s1: JSX.Element, s2: JSX.Element) => (s1.props.station.id > s2.props.station.id) ? 1 : -1);
         return (
