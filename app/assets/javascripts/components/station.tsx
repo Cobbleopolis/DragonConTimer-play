@@ -59,6 +59,13 @@ export class StationComponent extends React.Component<StationProps, StationState
     }
 
     render() {
+        let panelType: string = "default";
+        if (this.props.station.time <= 0)
+            if (this.props.station.name === "" && this.props.station.console === "" && this.props.station.game === "")
+                panelType = "success";
+            else
+                panelType = "danger";
+
         let progressBarStyle: string = null;
         if (this.props.station.time <= dangerPoint)
             progressBarStyle = "danger";
@@ -74,7 +81,7 @@ export class StationComponent extends React.Component<StationProps, StationState
         let secDisplay: string = (sec != 0) ? `${sec}sec` : "";
         let selectedConsole: Console = ConsoleStore.getConsole(this.props.station.console);
         return (
-            <div className={"panel panel-" + ((this.props.station.time <= 0)? "danger" :"default")}>
+            <div className={"panel panel-" + panelType}>
                 <div className="panel-heading">{this.props.station.id} ({this.props.station.consoleOptions.map(consoleId => ConsoleStore.getConsole(consoleId).name).join(", ")})</div>
                 <div className="panel-body">
                     <R.ProgressBar bsStyle={progressBarStyle} now={this.props.station.time} max={StationRef.MAX_STATION_TIME}
