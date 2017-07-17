@@ -64,9 +64,11 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
     }
 
     render() {
+        let stationConsoleOptions: string[] = (this.props.station != null)? this.props.station.consoleOptions : [];
         let consoleDropdown: JSX.Element[] = [];
         ConsoleStore.consoles.forEach((v: Console) => {
-            consoleDropdown.push(<option key={v.id} value={v.id}>{v.name}</option>);
+            if (stationConsoleOptions.indexOf(v.id) > -1)
+                consoleDropdown.push(<option key={v.id} value={v.id}>{v.name}</option>);
         });
         let gameDropdown: JSX.Element[] = [];
         ConsoleStore.getConsole(this.state.console).games.forEach(game => gameDropdown.push(<option key={game} value={game}>{game}</option>));
