@@ -1,18 +1,7 @@
-@import components._
+@()(implicit webJarAssets: WebJarAssets, jsBase: controllers.Application.JsBase)
 
-@(message: String)
+@main(buildinfo.BuildInfo.name) {
 
-@main(buildinfo.BuildInfo.name){
-    <script src="@routes.Assets.at("javascripts/models/console.js")" type="text/javascript"></script>
-    <script src="@routes.Assets.at("javascripts/index.js")" type="text/javascript"></script>
 } {
-
-    <div><p>@message</p></div>
-
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#createConsole">Create Console</button>
-
-    @console(Console("A", 60))
-
-    @modals.createConsole()
-
+    <div id="main"></div>
 }
