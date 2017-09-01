@@ -47,6 +47,10 @@ class StationSocket(out: ActorRef, stationStore: StationStore) extends Actor {
                         case StationMessageType.TIME_RESET =>
                             station.time = Station.MAX_STATION_TIME
                             stationStore.set(station)
+
+                        case StationMessageType.TIME_ZERO =>
+                            station.time = 0
+                            stationStore.set(station)
                     }
                 }
             })

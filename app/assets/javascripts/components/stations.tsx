@@ -49,7 +49,9 @@ export class Stations extends React.Component<StationsProps, StationsState> {
                     if (stationMsg.updatedGame !== undefined)
                         station.game = stationMsg.updatedGame;
                 } else if (stationMsg.messageType == StationMessageType.TIME_RESET) {
-                    station.time = StationRef.MAX_STATION_TIME
+                    station.time = StationRef.MAX_STATION_TIME;
+                } else if (stationMsg.messageType == StationMessageType.TIME_ZERO) {
+                    station.time = 0;
                 }
                 updatedStations.set(stationMsg.id, station);
             });
@@ -80,22 +82,25 @@ export class Stations extends React.Component<StationsProps, StationsState> {
 
     sendFieldUpdates(station: Station, updatedName: string, updatedConsole: string, updatedGame: string): any {
         // station.time = Math.random() * 3600000;
-        let message: StationMessage = {
-            messageType: StationMessageType.FIELD_UPDATE,
-            id: station.id,
-            updatedName: updatedName,
-            updatedConsole: updatedConsole,
-            updatedGame: updatedGame
-        };
+        let message: StationMessage = new StationMessage(
+            StationMessageType.FIELD_UPDATE,
+            station.id,
+            null,
+            updatedName,
+            updatedConsole,
+            updatedGame
+        );
         this.socket.send(JSON.stringify([message]))
     }
 
     resetTime(station: Station) {
-        let message: StationMessage = {
-            messageType: StationMessageType.TIME_RESET,
-            id: station.id
-        };
+        let message: StationMessage = new StationMessage(StationMessageType.TIME_RESET, station.id);
         this.socket.send(JSON.stringify([message]))
+    }
+
+    zeroTime(station: Station) {
+        let message: StationMessage = new StationMessage(StationMessageType.TIME_ZERO, station.id);
+        this.socket.send(JSON.stringify([message]));
     }
 
     showSetFields(station: Station) {
@@ -121,13 +126,15 @@ export class Stations extends React.Component<StationsProps, StationsState> {
     render() {
         let stationElements: JSX.Element[] = [];
         this.state.stations.forEach((v: Station, k: string) => {
-            stationElements.push(<StationComponent key={k} station={v} showSetFields={this.showSetFields}
-                                                   resetTime={this.resetTime.bind(this, v)} clearFields={this.clearStation.bind(this, v)}/>)
+            stationElements.push(<StationComponent key={k} station={v}
+                                                   showSetFields={this.showSetFields}
+                                                   resetTime={this.resetTime.bind(this, v)}
+                                                   clearFields={this.clearStation.bind(this, v)}
+                                                   zeroTime={this.zeroTime.bind(this, v)}/>)
         });
         stationElements = stationElements.sort((s1: JSX.Element, s2: JSX.Element) => (s1.props.station.id > s2.props.station.id) ? 1 : -1);
         return (
             <div>
-                <p>{stationElements.length}</p>
                 {stationElements}
                 <StationSetFieldsModal show={this.state.setFields.show}
                                        onClose={this.closeSetFields} updateValues={this.sendFieldUpdates}

@@ -17,7 +17,7 @@ class Main extends React.Component<MainProps, MainState> {
 
     constructor(props: MainProps) {
         super(props);
-        $.getJSON("data/consoles", (data: Console[]) => {
+        $.getJSON("/data/consoles", (data: Console[]) => {
             console.log("Got consoles");
             ConsoleStore.addConsole(...data)
         });

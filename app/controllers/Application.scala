@@ -21,7 +21,7 @@ class Application @Inject()(implicit webJarAssets: WebJarAssets, environment: pl
     val webpackServerFormat: String = s"http${if (webpackServerIsSecure) "s" else ""}://%s:$webpackServerPort/$webpackServerContentPath"
 
     def index = Action { implicit request =>
-        implicit val jsPath: JsBase = if (environment.mode == Mode.Dev) webpackServerFormat.format(request.domain) else routes.Assets.at("/javascripts").url
+        implicit val jsPath: JsBase = if (environment.mode == Mode.Dev) webpackServerFormat.format(request.domain) else routes.Assets.at("/javascripts/").url
         Ok(views.html.index())
     }
 

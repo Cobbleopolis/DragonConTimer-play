@@ -1,7 +1,7 @@
 import sbt.Keys._
 
 val appName: String = "DragonCon Timer"
-val appVersion: String = "1.0"
+val appVersion: String = "1.1.0"
 val appScalaVersion: String = "2.11.7"
 val reactVersion: String = "15.3.2"
 val baseDependencies = Seq(
@@ -23,9 +23,17 @@ val otherDependencies = Seq(
     "org.mindrot" % "jbcrypt" % "0.3m"
 )
 
+lazy val webpack = taskKey[Unit]("webpack")
 
+def runWebpack(file: File) = {
+    Process(Webpack.getCommand("webpack", "-p", "--config", "webpack.production.config.js"), file, "NODE_ENV" -> "production") !
+}
 
-lazy val `dragoncontimer` = (project in file(".")).enablePlugins(PlayScala, DebianPlugin, BuildInfoPlugin).settings(
+webpack := {
+    if (runWebpack(baseDirectory.value) != 0) throw new Exception("Something goes wrong when running webpack.")
+}
+
+lazy val `dragoncontimer` = (project in file(".")).enablePlugins(PlayScala, DebianPlugin, WindowsPlugin, BuildInfoPlugin).settings(
     name := appName,
     version := appVersion,
     scalaVersion := appScalaVersion,
@@ -44,6 +52,9 @@ lazy val `dragoncontimer` = (project in file(".")).enablePlugins(PlayScala, Debi
             path.getName.endsWith(".tsx") || path.getName == "app"
         }
     },
-    pipelineStages := Seq(digest, gzip)
+    pipelineStages := Seq(digest, gzip),
+    dist <<= dist dependsOn webpack,
+    stage <<= stage dependsOn webpack,
+    test <<= (test in Test) dependsOn webpack
     //    bashScriptExtraDefines += """addJava "-Dconfig.file=${app_home}/../conf/production.conf""""
 )

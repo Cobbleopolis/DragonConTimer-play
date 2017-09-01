@@ -10,13 +10,22 @@ export class StationMessage {
 
     id: string;
 
-    updatedTime?:number;
+    updatedTime:number;
 
-    updatedName?:string;
+    updatedName:string;
 
-    updatedConsole?:string;
+    updatedConsole:string;
 
-    updatedGame?:string;
+    updatedGame:string;
+
+    constructor(messageType: StationMessageType, id: string, updatedTime: number = 0, updatedName: string = "", updatedConsole: string = "", updatedGame: string = "") {
+        this.messageType = messageType;
+        this.id = id;
+        this.updatedTime = updatedTime;
+        this.updatedName = updatedName;
+        this.updatedConsole = updatedConsole;
+        this.updatedGame = updatedGame;
+    }
 
     static fromJSON(obj:IStationMessage):StationMessage {
         return $.extend({}, obj);
