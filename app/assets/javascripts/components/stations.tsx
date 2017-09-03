@@ -76,6 +76,7 @@ export class Stations extends React.Component<StationsProps, StationsState> {
             this.setState(update(this.state, {stations: {$set: updatedStations}}) as StationsState)
         }, 1000);
         this.sendFieldUpdates = this.sendFieldUpdates.bind(this);
+        this.sendFieldUpdatesAndResetTime = this.sendFieldUpdatesAndResetTime.bind(this);
         this.showSetFields = this.showSetFields.bind(this);
         this.closeSetFields = this.closeSetFields.bind(this)
     }
@@ -91,6 +92,22 @@ export class Stations extends React.Component<StationsProps, StationsState> {
             updatedGame
         );
         this.socket.send(JSON.stringify([message]))
+    }
+
+    sendFieldUpdatesAndResetTime(station: Station, updatedName: string, updatedConsole: string, updatedGame: string): any {
+        let fieldMessage: StationMessage = new StationMessage(
+            StationMessageType.FIELD_UPDATE,
+            station.id,
+            null,
+            updatedName,
+            updatedConsole,
+            updatedGame
+        );
+        let timeResetMessage: StationMessage = new StationMessage(
+            StationMessageType.TIME_RESET,
+            station.id
+        );
+        this.socket.send(JSON.stringify([fieldMessage, timeResetMessage]))
     }
 
     resetTime(station: Station) {
@@ -137,7 +154,9 @@ export class Stations extends React.Component<StationsProps, StationsState> {
             <div>
                 {stationElements}
                 <StationSetFieldsModal show={this.state.setFields.show}
-                                       onClose={this.closeSetFields} updateValues={this.sendFieldUpdates}
+                                       onClose={this.closeSetFields}
+                                       updateValues={this.sendFieldUpdates}
+                                       updateValuesAndTime={this.sendFieldUpdatesAndResetTime}
                                        station={this.state.setFields.boundStation}/>
             </div>
         );

@@ -10,6 +10,7 @@ export interface StationSetFieldsModalProps {
     show: boolean;
     onClose: () => void;
     updateValues: (station: Station, updatedName: string, updatedConsole: string, updatedGame: string) => void;
+    updateValuesAndTime: (station: Station, updatedName: string, updatedConsole: string, updatedGame: string) => void;
     station?: Station;
 }
 
@@ -38,6 +39,7 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
             };
         }
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSubmitAndResetTime = this.handleSubmitAndResetTime.bind(this);
         this.onEnter = this.onEnter.bind(this);
     }
 
@@ -55,6 +57,16 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
 
     handleSubmit(event: any) {
         this.props.updateValues(this.props.station,
+            this.state.name,
+            this.state.console,
+            this.state.game
+        );
+        this.props.onClose();
+        event.preventDefault();
+    }
+
+    handleSubmitAndResetTime(event: any) {
+        this.props.updateValuesAndTime(this.props.station,
             this.state.name,
             this.state.console,
             this.state.game
@@ -112,7 +124,8 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={this.props.onClose}>Close</Button>
-                        <Button type="submit" bsStyle="success" onClick={this.handleSubmit}>Save</Button>
+                        <Button type="submit" bsStyle="primary" onClick={this.handleSubmit}>Save</Button>
+                        <Button type="submit" bsStyle="success" onClick={this.handleSubmitAndResetTime}>Save &amp; Reset Time</Button>
                     </ModalFooter>
                 </R.Form>
             </Modal>
