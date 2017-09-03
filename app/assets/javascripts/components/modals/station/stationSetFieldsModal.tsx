@@ -31,6 +31,8 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
                 console: props.station.console,
                 game: props.station.game
             };
+            if (props.station.console && props.station.consoleOptions.length == 1)
+                this.state.console = props.station.consoleOptions[0];
         } else {
             this.state = {
                 name: "",
@@ -44,9 +46,12 @@ export class StationSetFieldsModal extends React.Component<StationSetFieldsModal
     }
 
     onEnter() {
+        let stationValue = this.props.station.console;
+        if (!this.props.station.console && this.props.station.consoleOptions.length == 1)
+            stationValue = this.props.station.consoleOptions[0];
         this.setState({
             name: this.props.station.name,
-            console: this.props.station.console,
+            console: stationValue,
             game: this.props.station.game
         });
     }
