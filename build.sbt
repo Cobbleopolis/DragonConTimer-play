@@ -1,7 +1,7 @@
 import sbt.Keys._
 
 val appName: String = "DragonCon Timer"
-val appVersion: String = "1.1.0"
+val appVersion: String = "1.2.0"
 val appScalaVersion: String = "2.11.7"
 val reactVersion: String = "15.3.2"
 val baseDependencies = Seq(
