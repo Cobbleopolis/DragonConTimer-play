@@ -7,9 +7,12 @@ var webpack = require('webpack'),
     config = require('./webpack.config.js');
 
 var productionConfig = {
-    debug: false,
     devtool: "source-map",
-    watch: false
+    watch: false,
+    optimization: {
+        minimize: true,
+        noEmitOnErrors: true
+    }
 };
 
 for (var key in productionConfig)

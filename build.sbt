@@ -12,7 +12,8 @@ val baseDependencies = Seq(
 )
 val webJars = Seq (
     "org.webjars" %% "webjars-play" % "2.5.0",
-    "org.webjars" % "jquery" % "2.2.2"
+    "org.webjars" % "jquery" % "2.2.2",
+    "org.webjars.npm" % "js-tokens" % "4.0.0"
 )
 val reactJars = Seq(
     "org.webjars.npm" % "react" % reactVersion,
